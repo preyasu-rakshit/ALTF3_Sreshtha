@@ -34,10 +34,11 @@ class player:
 
     def handle_pos(self):
         print(f"You have landed in {self.board.board[self.pos].name}")
+        print()
 
     def move(self):
-        
-        print(f"{self.name} {self.id}'s turn:")
+        print('-'*50)
+        print(f"Player {self.id + 1}'s turn:")
         print(f'''
         Denomination : Quantity
               100 : {self.hunds}
@@ -45,7 +46,8 @@ class player:
               1000 : {self.thous}
               5000 : {self.fithou}
               
-              Total : {self.get_bal()}''')
+              Total : {self.get_bal()}
+              ''')
         input('Press Enter to Roll the Die: ')
         
         roll = self.roll_die()
@@ -61,6 +63,7 @@ class player:
             self.go_ahead(roll)
 
         input("Press Enter to continue...")
+        print()
         return True
 
 class Board:
