@@ -12,12 +12,14 @@ class player:
         self.thous = 4
         self.fithou = 1
 
-        self.bal = self.get_bal()
+        self.bal = 15000
         self.start_pass = 0
         self.started = False
+        self.miss_turn = False
 
     def get_bal(self):
-        return self.hunds*100 + self.fifs*500 + self.thous*1000 + self.fithou*5000
+        return self.bal
+        # return self.hunds*100 + self.fifs*500 + self.thous*1000 + self.fithou*5000
     
     def roll_die(self):
         die1 = random.randint(1, 6)
@@ -28,26 +30,53 @@ class player:
     def go_ahead(self, steps):
         self.pos += steps
         if self.pos > 35:
-            self.pos = self.pos - 35
+            self.pos = self.pos - 36
         
         self.handle_pos()
 
-    def handle_pos(self):
-        print(f"You have landed in {self.board.board[self.pos].name}")
+    def handle_pos(self, steps):
+        cur_pos = self.board.board[self.pos].name
+        print(f"You have landed in {cur_pos}")
         print()
+
+        if cur_pos == 'CHANCE':
+            print(f'You landed on chance with a {steps}:')
+            if steps == 2:
+                print('Loss in share market Rs. 2000 :(')
+                self.bal -= 2000
+            elif steps == 4:
+                print('Fine for Drunk Driving! Rs. 1000')
+                self.bal -= 1000
+            elif steps == 4:
+                print('Fine for Drunk Driving! Rs. 1000')
+                self.bal -= 1000
+            elif steps == 4:
+                print('Fine for Drunk Driving! Rs. 1000')
+                self.bal -= 1000
+            elif steps == 10:
+                print('Fine for Drunk Driving! Rs. 1000')
+                self.bal -= 1000
+            elif steps == 12:
+                print('Go to rest house and miss your next turn!')
+                self.miss_turn = True
+                self.pos = 28
+                self.bal -= 100
+                print
+        
 
     def move(self):
         print('-'*50)
         print(f"Player {self.id + 1}'s turn:")
-        print(f'''
-        Denomination : Quantity
-              100 : {self.hunds}
-              500 : {self.fifs}
-              1000 : {self.thous}
-              5000 : {self.fithou}
+        # print(f'''
+        # Denomination : Quantity
+        #       100 : {self.hunds}
+        #       500 : {self.fifs}
+        #       1000 : {self.thous}
+        #       5000 : {self.fithou}
               
-              Total : {self.get_bal()}
-              ''')
+        #       Total : {self.get_bal()}
+        #       ''')
+        print(f'Balance currently available: {self.get_bal()}')
         input('Press Enter to Roll the Die: ')
         
         roll = self.roll_die()
@@ -59,6 +88,9 @@ class player:
             else:
                 print('Sorry you cannot move yet!')
         
+        elif self.miss_turn:
+            print('You will have to miss this turn!')
+            self.miss_turn = False
         else:
             self.go_ahead(roll)
 
